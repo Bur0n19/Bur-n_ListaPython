@@ -13,6 +13,7 @@ from ejercicio10 import Ejercicio10
 
 
 class MenuPrincipal(ctk.CTkFrame):
+
     def __init__(self, parent, controlador):
         super().__init__(parent)
         label = ctk.CTkLabel(self, text="MENÚ PRINCIPAL", font=("Arial", 25))
@@ -23,6 +24,12 @@ class MenuPrincipal(ctk.CTkFrame):
 
         btn2 = ctk.CTkButton(self, text = "Ejercicio 2", command=lambda: controlador.mostrar_frame("ej2"))
         btn2.pack(pady=20)
+
+        btn7 = ctk.CTkButton(self, text="Ejercicio 7", command=lambda: controlador.mostrar_frame("ej7"))
+        btn7.pack(pady=20)
+
+        btn8 = ctk.CTkButton(self, text="Ejercicio 8", command=lambda: controlador.mostrar_frame("ej8"))
+        btn8.pack(pady=20)
 
 class App(ctk.CTk):
     def __init__(self):
