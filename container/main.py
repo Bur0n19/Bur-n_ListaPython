@@ -1,52 +1,63 @@
-from tkinter import *
 import customtkinter as ctk
-app = ctk.CTk()
-ancho = 850
-alto = 700
 
-#Centra la pantalla con
-pantalla_ancho = app.winfo_screenwidth()
-pantalla_alto = app.winfo_screenheight()
-x = int((pantalla_ancho / 2) - (ancho / 2))
-y = int((pantalla_alto / 2) - (alto / 2))
-app.geometry(f"{ancho}x{alto}+{x}+{y}")
-
-ctk.set_appearance_mode('dark')
-ctk.set_default_color_theme('dark-blue')
-app.title('Burón_EjerciciosPython')
-
-btn1 = ctk.CTkButton(app, text='1.-')
-btn2 = ctk.CTkButton(app, text='2.-')
-btn3 = ctk.CTkButton(app, text='3.-')
-btn4 = ctk.CTkButton(app, text='4.-')
-btn5 = ctk.CTkButton(app, text='5.-')
-btn6 = ctk.CTkButton(app, text='6.-')
-btn7 = ctk.CTkButton(app, text='7.-')
-btn8 = ctk.CTkButton(app, text='8.-')
-btn9 = ctk.CTkButton(app, text='9.-')
-btn10 = ctk.CTkButton(app, text='10.-')
+from ejercicio1 import Ejercicio1
+from ejercicio2 import Ejercicio2
+from ejercicio3 import Ejercicio3
+from ejercicio4 import Ejercicio4
+from ejercicio5 import Ejercicio5
+from ejercicio6 import Ejercicio6
+from ejercicio7 import Ejercicio7
+from ejercicio8 import Ejercicio8
+from ejercicio9 import Ejercicio9
+from ejercicio10 import Ejercicio10
 
 
-btn1.grid(row=0, column=0, padx=20, pady=20)
-btn2.grid(row=0, column=1, padx=20, pady=20)
-btn3.grid(row=0, column=2, padx=20, pady=20)
-btn4.grid(row=1, column=0, padx=20, pady=20)
-btn5.grid(row=1, column=1, padx=20, pady=20)
-btn6.grid(row=1, column=2, padx=20, pady=20)
-btn7.grid(row=2, column=0, padx=20, pady=20)
-btn8.grid(row=2, column=1, padx=20, pady=20)
-btn9.grid(row=2, column=2, padx=20, pady=20)
-btn10.grid(row=3, column=1, padx=20, pady=20)
+class MenuPrincipal(ctk.CTkFrame):
+    def __init__(self, parent, controlador):
+        super().__init__(parent)
+        label = ctk.CTkLabel(self, text="MENÚ PRINCIPAL", font=("Arial", 25))
+        label.pack(pady=20)
 
-app.mainloop()
+        btn1 = ctk.CTkButton(self, text="Ejercicio 1", command=lambda: controlador.mostrar_frame("ej1"))
+        btn1.pack(pady=20)
 
+        btn2 = ctk.CTkButton(self, text = "Ejercicio 2", command=lambda: controlador.mostrar_frame("ej2"))
+        btn2.pack(pady=20)
 
+class App(ctk.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title('Burón Ejercicios Python')
+        self.geometry('850x700')
 
+        self.contenedor = ctk.CTkFrame(self)
+        self.contenedor.pack(fill="both", expand=True)
+        self.contenedor.grid_rowconfigure(0, weight=1)
+        self.contenedor.grid_columnconfigure(0, weight=1)
 
+        self.frames={}
 
+        vistas = { "menu": MenuPrincipal,
+                  "ej1": Ejercicio1, "ej2": Ejercicio2, "ej3": Ejercicio3,
+                  "ej4": Ejercicio4, "ej5": Ejercicio5, "ej6": Ejercicio6,
+                  "ej7": Ejercicio7, "ej8": Ejercicio8, "ej9": Ejercicio9,
+                  "ej10": Ejercicio10
+                  }
 
+        for nombre, clase in vistas.items():
+            frame = clase(parent = self.contenedor, controlador = self)
+            self.frames[nombre] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
 
+        self.mostrar_frame("menu")
 
+    def mostrar_frame(self, nombre):
+        frame = self.frames[nombre]
+        frame.tkraise()
+
+if __name__ == "__main__":
+    app = App()
+    app.mainloop()
 
 
 
