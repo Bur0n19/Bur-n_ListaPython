@@ -1,5 +1,3 @@
-from json.decoder import NaN
-
 import customtkinter as ctk
 import pandas as pd
 
@@ -8,7 +6,6 @@ class Ejercicio8(ctk.CTkFrame):
         super().__init__(parent)
         self.controlador = controlador
         self.listaNumeros = []
-
 
         self.titulo = ctk.CTkLabel(self, text="8. Suma de N números", font=("Arial", 18, "bold"))
         self.titulo.pack(pady=10)
@@ -31,7 +28,6 @@ class Ejercicio8(ctk.CTkFrame):
         self.btn_regresar = ctk.CTkButton(self, text="Volver al Menú",command=lambda: controlador.mostrar_frame("menu"), fg_color="gray")
         self.btn_regresar.pack(pady=10)
 
-
     def sumatoria(self):
         try:
             numero = float(self.entradaNumero.get())
@@ -44,15 +40,11 @@ class Ejercicio8(ctk.CTkFrame):
         except ValueError:
             self.alertas.configure(text="Ingresa un número válido para la suma", text_color="red")
 
-
-
     def actualizar_tabla_visual(self):
         df = pd.DataFrame(self.listaNumeros, columns=["Numero"])
 
         self.caja_tabla.delete("1.0", "end")
         self.caja_tabla.insert("1.0", df.to_string(index=False))
-
-
 
 
 
