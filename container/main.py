@@ -23,31 +23,34 @@ class MenuPrincipal(ctk.CTkFrame):
         marca.pack(pady=15)
 
         btn1 = ctk.CTkButton(self, text="Ejercicio 1", command=lambda: controlador.mostrar_frame("ej1"))
-        btn1.pack(pady=20)
+        btn1.pack(pady=12)
 
         btn2 = ctk.CTkButton(self, text="Ejercicio 2", command=lambda: controlador.mostrar_frame("ej2"))
-        btn2.pack(pady=20)
+        btn2.pack(pady=12)
 
         btn3 = ctk.CTkButton(self, text="Ejercicio 3", command=lambda: controlador.mostrar_frame("ej3"))
-        btn3.pack(pady=20)
+        btn3.pack(pady=12)
 
         btn4 = ctk.CTkButton(self, text="Ejercicio 4", command=lambda: controlador.mostrar_frame("ej4"))
-        btn4.pack(pady=20)
+        btn4.pack(pady=12)
 
         btn5 = ctk.CTkButton(self, text="Ejercicio 5", command=lambda: controlador.mostrar_frame("ej5"))
-        btn5.pack(pady=20)
+        btn5.pack(pady=12)
 
         btn6 = ctk.CTkButton(self, text="Ejercicio 6", command=lambda: controlador.mostrar_frame("ej6"))
-        btn6.pack(pady=20)
+        btn6.pack(pady=12)
 
         btn7 = ctk.CTkButton(self, text="Ejercicio 7", command=lambda: controlador.mostrar_frame("ej7"))
-        btn7.pack(pady=20)
+        btn7.pack(pady=12)
 
         btn8 = ctk.CTkButton(self, text="Ejercicio 8", command=lambda: controlador.mostrar_frame("ej8"))
-        btn8.pack(pady=20)
+        btn8.pack(pady=12)
 
         btn9 = ctk.CTkButton(self, text="Ejercicio 9", command=lambda: controlador.mostrar_frame("ej9"))
-        btn9.pack(pady=20)
+        btn9.pack(pady=12)
+
+        btn10 = ctk.CTkButton(self, text="Ejercicio 10", command=lambda: controlador.mostrar_frame("ej10"))
+        btn10.pack(pady=12)
 
 class App(ctk.CTk):
     def __init__(self):
