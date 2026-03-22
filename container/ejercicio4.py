@@ -1,60 +1,76 @@
 import customtkinter as ctk
 
+
 class Ejercicio4(ctk.CTkFrame):
     def __init__(self, parent, controlador):
         super().__init__(parent)
         self.controlador = controlador
-"""""
-        intentos_ej4 = 0
 
-        def ventana_ejercicio_4():
-            global intentos_ej4
-            intentos_ej4 = 0
+        # --- Variables de clase ---
+        # Reemplazamos la variable global por un atributo de la instancia
+        self.intentos = 0
 
-            nuevaVentana = Toplevel(window)
-            nuevaVentana.title("Ejercicio 4: Validación de Numeros <10")
-            nuevaVentana.geometry("400x350")
+        # --- INTERFAZ GRÁFICA ---
+        self.titulo = ctk.CTkLabel(self, text="Validación de Número Menor a 10", font=("Arial", 18, "bold"))
+        self.titulo.pack(pady=(20, 10))
 
-            Label(nuevaVentana, text="Validacion de Numero Menor a 10", font=("Arial", 12, "bold")).pack(pady=10)
+        self.instruccion = ctk.CTkLabel(self, text="Ingresa un número entero menor que 10:")
+        self.instruccion.pack(pady=5)
 
-            numero_var = StringVar()
+        # Entrada de texto (reemplaza a Entry y StringVar)
+        self.entrada_numero = ctk.CTkEntry(self, placeholder_text="Ej: 5", width=250)
+        self.entrada_numero.pack(pady=10)
 
-            Label(nuevaVentana, text="Ingresa un numero entero menor que 10:").pack()
-            Entry(nuevaVentana, textvariable=numero_var, width=30).pack(pady=5)
+        # Botón de validación
+        self.btn_validar = ctk.CTkButton(self, text="Validar Número", command=self.validar_numero)
+        self.btn_validar.pack(pady=10)
 
-            alertas_ej4 = Label(nueva_ventana, text="", fg="red")
-            alertas_ej4.pack(pady=5)
+        # Etiquetas para mostrar alertas y resultados
+        self.alertas = ctk.CTkLabel(self, text="", text_color="red")
+        self.alertas.pack(pady=5)
 
-            resultados_ej4 = Label(nueva_ventana, text="", font=("Arial", 11, "bold"))
-            resultados_ej4.pack(pady=10)
+        self.resultados = ctk.CTkLabel(self, text="", font=("Arial", 14, "bold"))
+        self.resultados.pack(pady=10)
 
-            def validar():
-                global intentos_ej4
+        # Botón para regresar al menú principal
+        self.btn_regresar = ctk.CTkButton(self, text="Volver al Menú",
+                                          command=lambda: controlador.mostrar_frame("menu"), fg_color="gray")
+        self.btn_regresar.pack(pady=20)
 
-                intentos_ej4 += 1
+    # --- LÓGICA DEL PROGRAMA ---
+    def validar_numero(self):
+        # 1. Aumentamos el contador de intentos cada vez que se presiona el botón
+        self.intentos += 1
 
-                numeroTexto = numero_var.get()
+        # 2. Obtenemos el texto ingresado
+        numero_texto = self.entrada_numero.get().strip()
 
-                if numerooTexto == "":
-                    alertas_ej4.config(text=f"Intento {intentos_ej4}: El campo está vacio.", fg="red")
-                    return
+        # Validación A: Campo vacío
+        if not numero_texto:
+            self.alertas.configure(text=f"Intento {self.intentos}: El campo está vacío.", text_color="red")
+            self.resultados.configure(text="")  # Limpiamos resultados anteriores si los hay
+            return
 
-                try:
-                    numero = int(numeroTexto)
-                except ValueError:
-                    alertas_ej4.config(text=f"Intento {intentos_ej4}: Ingresa solo numeros enteros.", fg="red")
-                    return
+        # Validación B: Que sea un número entero
+        try:
+            numero = int(numero_texto)
+        except ValueError:
+            self.alertas.configure(text=f"Intento {self.intentos}: Ingresa solo números enteros.", text_color="red")
+            self.resultados.configure(text="")
+            return
 
-                if numero >= 10:
-                    alertas_ej4.config(text=f"Intento {intentos_ej4}: El numero {numero} NO es menor a 10.", fg="red")
-                    resultados_ej4.config(text="")
-                else:
-                    alertas_ej4.config(text="Validación exitosa", fg="green")
-                    resultados_ej4.config(
-                        text=f"Numero correcto ingresado: {numero}\nCantidad de intentos: {intentos_ej4}")
+        # Validación C: Lógica principal (Menor a 10)
+        if numero >= 10:
+            self.alertas.configure(text=f"Intento {self.intentos}: El número {numero} NO es menor a 10.",
+                                   text_color="red")
+            self.resultados.configure(text="")
+        else:
+            # Éxito
+            self.alertas.configure(text="¡Validación exitosa!", text_color="green")
+            self.resultados.configure(
+                text=f"Número correcto ingresado: {numero}\nCantidad de intentos: {self.intentos}"
+            )
 
-                    intentos_ej4 = 0
-                    numero_var.set("")
-
-            Button(nueva_ventana, text="Validar Numero", command=validar).pack(pady=10)
-"""
+            # Reiniciamos el sistema para un nuevo juego/validación
+            self.intentos = 0
+            self.entrada_numero.delete(0, 'end')

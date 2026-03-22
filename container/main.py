@@ -22,8 +22,14 @@ class MenuPrincipal(ctk.CTkFrame):
         btn1 = ctk.CTkButton(self, text="Ejercicio 1", command=lambda: controlador.mostrar_frame("ej1"))
         btn1.pack(pady=20)
 
-        btn2 = ctk.CTkButton(self, text = "Ejercicio 2", command=lambda: controlador.mostrar_frame("ej2"))
+        btn2 = ctk.CTkButton(self, text="Ejercicio 2", command=lambda: controlador.mostrar_frame("ej2"))
         btn2.pack(pady=20)
+
+        btn3 = ctk.CTkButton(self, text="Ejercicio 3", command=lambda: controlador.mostrar_frame("ej3"))
+        btn3.pack(pady=20)
+
+        btn4 = ctk.CTkButton(self, text="Ejercicio 4", command=lambda: controlador.mostrar_frame("ej4"))
+        btn4.pack(pady=20)
 
         btn7 = ctk.CTkButton(self, text="Ejercicio 7", command=lambda: controlador.mostrar_frame("ej7"))
         btn7.pack(pady=20)
