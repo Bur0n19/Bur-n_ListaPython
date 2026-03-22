@@ -19,6 +19,9 @@ class MenuPrincipal(ctk.CTkFrame):
         label = ctk.CTkLabel(self, text="MENÚ PRINCIPAL", font=("Arial", 25))
         label.pack(pady=20)
 
+        marca = ctk.CTkLabel(self, text="César A. Burón M. 6IV8_Fundamentos IA", font=("Arial", 20))
+        marca.pack(pady=15)
+
         btn1 = ctk.CTkButton(self, text="Ejercicio 1", command=lambda: controlador.mostrar_frame("ej1"))
         btn1.pack(pady=20)
 
@@ -30,6 +33,9 @@ class MenuPrincipal(ctk.CTkFrame):
 
         btn4 = ctk.CTkButton(self, text="Ejercicio 4", command=lambda: controlador.mostrar_frame("ej4"))
         btn4.pack(pady=20)
+
+        btn5 = ctk.CTkButton(self, text="Ejercicio 5", command=lambda: controlador.mostrar_frame("ej5"))
+        btn5.pack(pady=20)
 
         btn7 = ctk.CTkButton(self, text="Ejercicio 7", command=lambda: controlador.mostrar_frame("ej7"))
         btn7.pack(pady=20)
