@@ -37,6 +37,9 @@ class MenuPrincipal(ctk.CTkFrame):
         btn8 = ctk.CTkButton(self, text="Ejercicio 8", command=lambda: controlador.mostrar_frame("ej8"))
         btn8.pack(pady=20)
 
+        btn9 = ctk.CTkButton(self, text="Ejercicio 9", command=lambda: controlador.mostrar_frame("ej9"))
+        btn9.pack(pady=20)
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()
