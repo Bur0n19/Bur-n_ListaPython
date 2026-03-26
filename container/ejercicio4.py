@@ -38,6 +38,7 @@ class Ejercicio4(ctk.CTkFrame):
         if not numero_texto:
             self.alertas.configure(text=f"Intento {self.intentos}: El campo está vacío.", text_color="red")
             self.resultados.configure(text="")
+            self.entrada_numero.focus()
             return
 
         try:
@@ -48,9 +49,9 @@ class Ejercicio4(ctk.CTkFrame):
             return
 
         if numero >= 10:
-            self.alertas.configure(text=f"Intento {self.intentos}: El número {numero} NO es menor a 10.",
-                                   text_color="red")
+            self.alertas.configure(text=f"Intento {self.intentos}: El número {numero} NO es menor a 10.",text_color="red")
             self.resultados.configure(text="")
+            self.entrada_numero.delete(0, 'end')
         else:
             self.alertas.configure(text="¡Validación exitosa!", text_color="green")
             self.resultados.configure(
@@ -59,3 +60,4 @@ class Ejercicio4(ctk.CTkFrame):
 
             self.intentos = 0
             self.entrada_numero.delete(0, 'end')
+            self.entrada_numero.focus()

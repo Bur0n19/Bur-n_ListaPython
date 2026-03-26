@@ -60,6 +60,23 @@ class Ejercicio10(ctk.CTkFrame):
             horas_ext = float(horas_ext_txt)
             hijos = int(hijos_txt)
 
+            if horas_norm < 0 or pago_hora < 0 or horas_ext < 0 or hijos < 0:
+                self.alertas.configure(text="Error: No se permiten valores negativos.", text_color="red")
+                return
+
+            if horas_norm > 300:
+                self.alertas.configure(text="Error: Las horas normales exceden el límite lógico.", text_color="red")
+                return
+            if pago_hora > 100000:
+                self.alertas.configure(text="Error: El pago por hora excede el límite del sistema.", text_color="red")
+                return
+            if horas_ext > 150:
+                self.alertas.configure(text="Error: Las horas extra exceden el límite permitido.", text_color="red")
+                return
+            if hijos > 25:
+                self.alertas.configure(text="Error: Cantidad de hijos fuera de un rango realista.", text_color="red")
+                return
+
             pago_normal = horas_norm * pago_hora
             pago_extra = horas_ext * (pago_hora * 1.5)
             bono = hijos * 0.5
@@ -84,9 +101,10 @@ class Ejercicio10(ctk.CTkFrame):
             self.entrada_horas_ext.delete(0, 'end')
             self.entrada_hijos.delete(0, 'end')
 
-        except ValueError:
-            self.alertas.configure(text="Verifica que los valores numéricos sean correctos", text_color="red")
+            self.entrada_nombre.focus()
 
+        except ValueError:
+            self.alertas.configure(text="Error: Verifica que los valores ingresados sean numéricos.",text_color="red")
     def actualizar_tabla_visual(self):
         if not self.lista_trabajadores:
             self.caja_reporte.delete("1.0", "end")

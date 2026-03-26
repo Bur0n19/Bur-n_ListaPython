@@ -31,22 +31,29 @@ class Ejercicio5(ctk.CTkFrame):
         return 0 <= num <= 20
 
     def validar(self):
-        self.intentos += 1
+        def validar(self):
+            self.intentos += 1
+            numero_texto = self.entrada_numero.get().strip()
 
-        numero_texto = self.entrada_numero.get().strip()
+            if not numero_texto:
+                self.alertas.configure(text=f"El campo está vacío. (Intento {self.intentos})", text_color="red")
+                self.entrada_numero.focus()
+                return
 
-        if not numero_texto:
-            self.alertas.configure(text=f"El campo está vacío. (Intento {self.intentos})", text_color="red")
-            return
+            try:
+                numero = int(numero_texto)
 
-        try:
-            numero = int(numero_texto)
-            if not self.validar_rango(numero):
-                self.alertas.configure(text=f"El {numero} está fuera del rango. (Intento {self.intentos})",text_color="red")
-            else:
-                self.alertas.configure(text=f"¡Número válido: {numero}!\nTe tomó {self.intentos} intento(s).",text_color="green")
-                self.intentos = 0
+                if not self.validar_rango(numero):
+                    self.alertas.configure(text=f"El {numero} está fuera del rango. (Intento {self.intentos})",text_color="red")
+                    self.entrada_numero.delete(0, 'end')
+                    self.entrada_numero.focus()
+                else:
+                    self.alertas.configure(text=f"¡Número válido: {numero}!\nTe tomó {self.intentos} intento(s).",text_color="green")
+                    self.intentos = 0
+                    self.entrada_numero.delete(0, 'end')
+                    self.entrada_numero.focus()
+
+            except ValueError:
+                self.alertas.configure(text=f"Ingresa solo números enteros. (Intento {self.intentos})",text_color="red")
                 self.entrada_numero.delete(0, 'end')
-
-        except ValueError:
-            self.alertas.configure(text=f"Ingresa solo números enteros. (Intento {self.intentos})", text_color="red")
+                self.entrada_numero.focus()

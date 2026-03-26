@@ -33,9 +33,20 @@ class Ejercicio1(ctk.CTkFrame):
         self.btn_regresar.pack(pady=10)
 
     def aumentoSueldos(self):
+        nombre = self.entrada1.get().strip()
+        texto_sueldo = self.entrada2.get()
+
+        if not nombre:
+            self.resultado_label.configure(text="Error: Ingresa el nombre del empleado", text_color="red")
+            return
         try:
-            nombre = self.entrada1.get()
-            sueldo = float(self.entrada2.get())
+            sueldo = float(texto_sueldo)
+            if sueldo < 0:
+                self.resultado_label.configure(text="Error: El sueldo no puede ser negativo", text_color="red")
+                return
+            if sueldo > 100000:
+                self.resultado_label.configure(text="Error: Sueldo fuera de rango permitido", text_color="red")
+                return
 
             if sueldo < 4000:
                 nuevoSueldo = sueldo * 1.15
@@ -58,9 +69,10 @@ class Ejercicio1(ctk.CTkFrame):
 
             self.entrada1.delete(0, 'end')
             self.entrada2.delete(0, 'end')
+            self.entrada1.focus()
 
         except ValueError:
-            self.resultado_label.configure(text="Error: Datos inválidos", text_color="red")
+            self.resultado_label.configure(text="Error: Ingresa un sueldo numérico válido", text_color="red")
 
     def actualizar_tabla_visual(self):
         df = pd.DataFrame(self.lista_usuarios)

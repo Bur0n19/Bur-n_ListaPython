@@ -29,25 +29,36 @@ class Ejercicio9(ctk.CTkFrame):
         self.btn_regresar.pack(pady=10)
 
     def sumatoria(self):
+        texto_numero = self.entradaNumero.get().strip()
+
+        if not texto_numero:
+            self.alertas.configure(text="El campo está vacío. Ingresa un número.", text_color="red")
+            self.entradaNumero.focus()
+            return
+
         try:
-            numero = round(int(self.entradaNumero.get()))
+            numero = int(texto_numero)
+
             self.alertas.configure(text="")
             self.listaNumeros.append(numero)
             self.suma = sum(self.listaNumeros)
-
-            self.total.configure(text=f"Suma total: {self.suma}")
-            self.entradaNumero.delete(0, 'end')
             self.actualizar_tabla_visual()
 
             if self.suma > 100:
                 self.total.configure(text=f"¡Límite alcanzado! Suma final: {self.suma}", text_color="green")
-                self.alertas.configure(text="La lista se ha reiniciado. Ingresa un número nuevo.",text_color="#e67e22")
+                self.alertas.configure(text="La lista se ha reiniciado. Ingresa un número nuevo.", text_color="#e67e22")
                 self.listaNumeros.clear()
             else:
-                self.total.configure(text=f"Suma total: {self.suma}")
+                self.total.configure(text=f"Suma total: {self.suma}",text_color="white")
+
+            self.entradaNumero.delete(0, 'end')
+            self.entradaNumero.focus()
 
         except ValueError:
-            self.alertas.configure(text="Ingresa un número válido para la suma", text_color="red")
+            self.alertas.configure(text="Error: Ingresa un número entero válido", text_color="red")
+            self.entradaNumero.delete(0, 'end')
+            self.entradaNumero.focus()
+
 
     def actualizar_tabla_visual(self):
         if not self.listaNumeros:

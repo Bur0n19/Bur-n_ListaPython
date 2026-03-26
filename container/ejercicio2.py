@@ -27,8 +27,7 @@ class Ejercicio2(ctk.CTkFrame):
                                              fg_color="blue")
         self.btnVerHistorial.pack(pady=5)
 
-        self.btnCalcularSuma = ctk.CTkButton(self, text="Recaudo Total", command=self.recaudo_parque,
-                                             fg_color="#e67e22")
+        self.btnCalcularSuma = ctk.CTkButton(self, text="Recaudo Total", command=self.recaudo_parque,fg_color="green")
         self.btnCalcularSuma.pack(pady=5)
 
         self.resultado_label = ctk.CTkLabel(self, text="")
@@ -45,10 +44,26 @@ class Ejercicio2(ctk.CTkFrame):
         self.btn_regresar.pack(pady=10)
 
     def pagos_parque(self):
+        nombre = self.entrada1.get().strip()
+        texto_edad = self.entrada2.get()
+        texto_juegos = self.entrada3.get()
+
+        if not nombre:
+            self.resultado_label.configure(text="Error: Ingresa el nombre del cliente", text_color="red")
+            return
+
         try:
-            nombre = self.entrada1.get()
-            edad = int(self.entrada2.get())
-            n_juegos = int(self.entrada3.get())
+            edad = int(texto_edad)
+            n_juegos = int(texto_juegos)
+
+            if edad < 0 or edad > 120:
+                self.resultado_label.configure(text="Error: Ingresa una edad válida (0-120)", text_color="red")
+                return
+
+            if n_juegos < 0 or n_juegos > 100:
+                self.resultado_label.configure(text="Error: Cantidad de juegos inválida (0-100)", text_color="red")
+                return
+
             costoInicial = n_juegos * 50
 
             if edad < 10:
@@ -67,7 +82,6 @@ class Ejercicio2(ctk.CTkFrame):
             }
 
             self.lista_usuariosParque.append(registro)
-
             self.listaPrecios = [reg["Descuento por edad"] for reg in self.lista_usuariosParque]
 
             self.resultado_label.configure(text=f"Guardado: {nombre}", text_color="green")
@@ -75,11 +89,12 @@ class Ejercicio2(ctk.CTkFrame):
             self.entrada1.delete(0, 'end')
             self.entrada2.delete(0, 'end')
             self.entrada3.delete(0, 'end')
+            self.entrada1.focus()
 
             self.actualizar_tabla_visual()
 
         except ValueError:
-            self.resultado_label.configure(text="Error: Ingrese números válidos en Edad y Juegos", text_color="red")
+            self.resultado_label.configure(text="Error: Ingrese números enteros en Edad y Juegos", text_color="red")
         except Exception as e:
             print(f"Error interno: {e}")
             self.resultado_label.configure(text="Error en el sistema", text_color="red")

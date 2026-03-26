@@ -29,16 +29,30 @@ class Ejercicio8(ctk.CTkFrame):
         self.btn_regresar.pack(pady=10)
 
     def sumatoria(self):
+        texto_numero = self.entradaNumero.get().strip()
+
+        if not texto_numero:
+            self.alertas.configure(text="Error: El campo está vacío", text_color="red")
+            self.entradaNumero.focus()
+            return
+
         try:
-            numero = float(self.entradaNumero.get())
+            numero = float(texto_numero)
+
             self.alertas.configure(text="")
             self.listaNumeros.append(numero)
             self.suma = sum(self.listaNumeros)
+
             self.total.configure(text=f"Suma total: {self.suma}")
-            self.entradaNumero.delete(0, 'end')
             self.actualizar_tabla_visual()
+
+            self.entradaNumero.delete(0, 'end')
+            self.entradaNumero.focus()
+
         except ValueError:
-            self.alertas.configure(text="Ingresa un número válido para la suma", text_color="red")
+            self.alertas.configure(text="Error: Ingresa un número válido para la suma", text_color="red")
+            self.entradaNumero.delete(0, 'end')
+            self.entradaNumero.focus()
 
     def actualizar_tabla_visual(self):
         df = pd.DataFrame(self.listaNumeros, columns=["Numero"])

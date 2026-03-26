@@ -27,20 +27,51 @@ class Ejercicio7(ctk.CTkFrame):
         self.btn_regresar.pack(pady=10)
 
     def sumatoria_hastaN(self):
-        numeroN = float(self.entradaNumero.get())
-        n_limpio = int(round(numeroN))
+        texto_numero = self.entradaNumero.get().strip()
 
-        self.listaNumeros = []
-        self.listaNumeros.append(n_limpio)
+        if not texto_numero:
+            self.resultado_label.configure(text="Error: El campo está vacío.", text_color="red")
+            self.entradaNumero.focus()
+            return
 
-        for numeros in range(n_limpio):
-            n_limpio -= 1
-            self.listaNumeros.append(n_limpio)
-        suma_total = sum(self.listaNumeros)
-        self.resultado_label.configure(
-            text=f"Guardado desde {n_limpio} -> Suma Total: {suma_total}",
-            text_color="green"
-        )
+        try:
+            numeroN = float(texto_numero)
+            n_original = int(round(numeroN))
+
+            if n_original < 0:
+                self.resultado_label.configure(text="Error: Ingresa un número positivo.", text_color="red")
+                self.entradaNumero.delete(0, 'end')
+                self.entradaNumero.focus()
+                return
+
+            if n_original > 100000:
+                self.resultado_label.configure(text="Error: El número es demasiado grande.", text_color="red")
+                self.entradaNumero.delete(0, 'end')
+                self.entradaNumero.focus()
+                return
+
+            self.listaNumeros = []
+            n_calculo = n_original
+            self.listaNumeros.append(n_calculo)
+
+            for _ in range(n_calculo):
+                n_calculo -= 1
+                self.listaNumeros.append(n_calculo)
+
+            suma_total = sum(self.listaNumeros)
+
+            self.resultado_label.configure(
+                text=f"Sumatoria de {n_original} a 0 -> Total: {suma_total}",
+                text_color="green"
+            )
+
+            self.entradaNumero.delete(0, 'end')
+            self.entradaNumero.focus()
+
+        except ValueError:
+            self.resultado_label.configure(text="Error: Ingresa un número válido.", text_color="red")
+            self.entradaNumero.delete(0, 'end')
+            self.entradaNumero.focus()
 
         self.actualizar_tabla_visual()
 

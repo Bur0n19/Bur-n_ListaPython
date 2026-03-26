@@ -38,8 +38,7 @@ class Ejercicio3(ctk.CTkFrame):
         self.etiqueta_total = ctk.CTkLabel(self, text="Total vendido en el día: $0.00", font=("Arial", 14, "bold"))
         self.etiqueta_total.pack(pady=10)
 
-        self.btn_regresar = ctk.CTkButton(self, text="Volver al Menú",
-                                          command=lambda: controlador.mostrar_frame("menu"), fg_color="gray")
+        self.btn_regresar = ctk.CTkButton(self, text="Volver al Menú",command=lambda: controlador.mostrar_frame("menu"), fg_color="gray")
         self.btn_regresar.pack(pady=10)
 
     def calcular_descuento(self):
@@ -48,41 +47,47 @@ class Ejercicio3(ctk.CTkFrame):
         importe_texto = self.entrada_importe.get().strip()
 
         if not nombre or not importe_texto:
-            self.alertas.configure(text="Completa todos los campos", text_color="red")
+            self.alertas.configure(text="Error: Completa todos los campos", text_color="red")
             return
 
         try:
             importe = float(importe_texto)
+
             if importe <= 0:
-                self.alertas.configure(text="El importe debe ser mayor a 0", text_color="red")
+                self.alertas.configure(text="Error: El importe debe ser mayor a $0", text_color="red")
                 return
+
+            if importe > 1000000:
+                self.alertas.configure(text="Error: El importe excede el límite permitido", text_color="red")
+                return
+
+            if mes == "Octubre":
+                descuento = importe * 0.15
+            elif mes == "Diciembre":
+                descuento = importe * 0.20
+            elif mes == "Julio":
+                descuento = importe * 0.10
+            else:
+                descuento = 0.0
+
+            total_final = importe - descuento
+            self.total_vendido += total_final
+
+            registro = f"{nombre} ({mes}) | Pago: ${total_final:.2f}\n"
+            self.lista_compras.append(registro)
+
+            self.caja_compras.insert("end", registro)
+            self.etiqueta_total.configure(text=f"Total vendido en el día: ${self.total_vendido:.2f}")
+
+            self.alertas.configure(
+                text=f"¡Compra registrada! Total: ${total_final:.2f} | Descuento: ${descuento:.2f}",
+                text_color="green"
+            )
+
+            self.entrada_nombre.delete(0, 'end')
+            self.entrada_importe.delete(0, 'end')
+            self.combo_mes.set("Enero")
+            self.entrada_nombre.focus()
+
         except ValueError:
-            self.alertas.configure(text="Ingresa un número válido para el importe", text_color="red")
-            return
-
-        if mes == "Octubre":
-            descuento = importe * 0.15
-        elif mes == "Diciembre":
-            descuento = importe * 0.20
-        elif mes == "Julio":
-            descuento = importe * 0.10
-        else:
-            descuento = 0.0
-
-        total_final = importe - descuento
-        self.total_vendido += total_final
-
-        registro = f"{nombre} ({mes}) | Pago: ${total_final:.2f}\n"
-        self.lista_compras.append(registro)
-
-        self.caja_compras.insert("end", registro)  # Agrega el texto al final del Textbox
-        self.etiqueta_total.configure(text=f"Total vendido en el día: ${self.total_vendido:.2f}")
-
-        self.alertas.configure(
-            text=f"¡Compra registrada! Total: ${total_final:.2f} | Descuento: ${descuento:.2f}",
-            text_color="green"
-        )
-
-        self.entrada_nombre.delete(0, 'end')
-        self.entrada_importe.delete(0, 'end')
-        self.combo_mes.set("Enero")
+            self.alertas.configure(text="Error: Ingresa un número numérico válido para el importe", text_color="red")
