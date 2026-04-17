@@ -44,11 +44,11 @@ class Ejercicio7(ctk.CTkFrame):
                 self.entradaNumero.focus()
                 return
 
-            if n_original > 100000:
+            """if n_original > 100000:
                 self.resultado_label.configure(text="Error: El número es demasiado grande.", text_color="red")
                 self.entradaNumero.delete(0, 'end')
                 self.entradaNumero.focus()
-                return
+                return """
 
             self.listaNumeros = []
             n_calculo = n_original
