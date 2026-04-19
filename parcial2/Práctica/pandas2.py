@@ -10,6 +10,6 @@ y = tab.loc[tab.index>5["califiacion"]["nombre"].sum]
 fila = tab.loc(tab.indexes == 5)
 y = int(y)
 
-print("% de alumnos que han sacado 5" %y)
+#print("% de alumnos que han sacado 5" %y)
 
 
