@@ -1,0 +1,3 @@
+admin,admin123
+usuario1,pass2024
+analista,datos456
