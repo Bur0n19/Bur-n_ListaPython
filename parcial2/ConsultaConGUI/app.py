@@ -10,7 +10,7 @@ from tkinter import messagebox, ttk
 import os
 import sys
 
-# ── Configuración visual ──────────────────────────────────────────────────────
+#Configuración visual
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
@@ -24,14 +24,13 @@ SUCCESS  = "#3FB950"
 WARNING  = "#D29922"
 DANGER   = "#F85149"
 
-# ── Rutas ─────────────────────────────────────────────────────────────────────
+#Rutas
 BASE_DIR   = os.path.dirname(os.path.abspath(__file__))
 CSV_PATH   = os.path.join(BASE_DIR, "ciudades.csv")
 CRED_PATH  = os.path.join(BASE_DIR, "credenciales.txt")
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  PANTALLA DE LOGIN
-# ══════════════════════════════════════════════════════════════════════════════
+
+#PANTALLA DE LOGIN
 class LoginWindow(ctk.CTk):
     def __init__(self):
         super().__init__()
@@ -51,17 +50,12 @@ class LoginWindow(ctk.CTk):
     def _build_ui(self):
         # Título
         ctk.CTkLabel(self, text="🌍", font=("Segoe UI Emoji", 48)).pack(pady=(50, 4))
-        ctk.CTkLabel(self, text="Análisis Global de Ciudades",
-                     font=ctk.CTkFont("Segoe UI", 22, "bold"),
-                     text_color=ACCENT).pack()
-        ctk.CTkLabel(self, text="Ingresa tus credenciales para continuar",
-                     font=ctk.CTkFont("Segoe UI", 13),
-                     text_color=TEXT_SEC).pack(pady=(4, 30))
+        ctk.CTkLabel(self, text="Análisis Global de Ciudades",font=ctk.CTkFont("Segoe UI", 22, "bold"),text_color=ACCENT).pack()
+        ctk.CTkLabel(self, text="Ingresa tus credenciales para continuar",font=ctk.CTkFont("Segoe UI", 13),text_color=TEXT_SEC).pack(pady=(4, 30))
 
         frame = ctk.CTkFrame(self, fg_color=BG_CARD, corner_radius=16)
         frame.pack(padx=40, fill="x")
 
-        # Usuario
         ctk.CTkLabel(frame, text="Usuario", anchor="w",
                      font=ctk.CTkFont("Segoe UI", 13, "bold"),
                      text_color=TEXT_SEC).pack(padx=24, pady=(24, 0), fill="x")
@@ -71,7 +65,6 @@ class LoginWindow(ctk.CTk):
                                        text_color=TEXT_PRI, font=ctk.CTkFont("Segoe UI", 14))
         self.entry_user.pack(padx=24, pady=(4, 16), fill="x")
 
-        # Contraseña
         ctk.CTkLabel(frame, text="Contraseña", anchor="w",
                      font=ctk.CTkFont("Segoe UI", 13, "bold"),
                      text_color=TEXT_SEC).pack(padx=24, fill="x")
@@ -81,25 +74,21 @@ class LoginWindow(ctk.CTk):
                                        text_color=TEXT_PRI, font=ctk.CTkFont("Segoe UI", 14))
         self.entry_pass.pack(padx=24, pady=(4, 8), fill="x")
 
-        # Mostrar/ocultar
         self.show_var = ctk.BooleanVar(value=False)
         ctk.CTkCheckBox(frame, text="Mostrar contraseña", variable=self.show_var,
                         command=self._toggle_pass,
                         text_color=TEXT_SEC, font=ctk.CTkFont("Segoe UI", 12),
                         checkmark_color=ACCENT, fg_color=ACCENT).pack(padx=24, pady=(0, 20), anchor="w")
 
-        # Error label
         self.lbl_error = ctk.CTkLabel(frame, text="", text_color=DANGER,
                                       font=ctk.CTkFont("Segoe UI", 12))
         self.lbl_error.pack()
 
-        # Botón
         ctk.CTkButton(frame, text="Iniciar sesión →", height=44, corner_radius=10,
                       fg_color=ACCENT, hover_color="#009FCC", text_color=BG_DARK,
                       font=ctk.CTkFont("Segoe UI", 15, "bold"),
                       command=self._login).pack(padx=24, pady=(8, 24), fill="x")
 
-        # Hint
         ctk.CTkLabel(self, text="admin / admin123  •  usuario1 / pass2024  •  analista / datos456",
                      text_color=TEXT_SEC, font=ctk.CTkFont("Segoe UI", 10)).pack(pady=(16, 0))
 
@@ -151,9 +140,7 @@ class LoginWindow(ctk.CTk):
         self.after(3000, lambda: self.lbl_error.configure(text=""))
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-#  APLICACIÓN PRINCIPAL
-# ══════════════════════════════════════════════════════════════════════════════
+#Main
 class MainApp(ctk.CTk):
     def __init__(self, username):
         super().__init__()
@@ -167,7 +154,7 @@ class MainApp(ctk.CTk):
         self._show_query(0)
         self.state("zoomed")
 
-    # ── Datos ─────────────────────────────────────────────────────────────────
+    #Datos
     def _load_data(self):
         try:
             df = pd.read_csv(CSV_PATH)
@@ -177,14 +164,13 @@ class MainApp(ctk.CTk):
             messagebox.showerror("Error", f"No se encontró: {CSV_PATH}")
             sys.exit(1)
 
-    # ── Layout ────────────────────────────────────────────────────────────────
+    #Layout
     def _build_layout(self):
         # Sidebar
         self.sidebar = ctk.CTkFrame(self, width=260, fg_color=BG_CARD, corner_radius=0)
         self.sidebar.pack(side="left", fill="y")
         self.sidebar.pack_propagate(False)
 
-        # Header sidebar
         header = ctk.CTkFrame(self.sidebar, fg_color="transparent")
         header.pack(fill="x", padx=16, pady=(20, 10))
         ctk.CTkLabel(header, text="🌍 CityAnalytics",
@@ -196,7 +182,6 @@ class MainApp(ctk.CTk):
 
         ctk.CTkFrame(self.sidebar, height=1, fg_color="#30363D").pack(fill="x", padx=16, pady=10)
 
-        # Consultas
         ctk.CTkLabel(self.sidebar, text="CONSULTAS",
                      font=ctk.CTkFont("Segoe UI", 10, "bold"),
                      text_color=TEXT_SEC).pack(anchor="w", padx=20, pady=(0, 6))
@@ -253,20 +238,16 @@ class MainApp(ctk.CTk):
                                       text_color=TEXT_PRI)
         self.lbl_title.pack(side="left", padx=24, pady=16)
 
-        # Zona de contenido (2 frames horizontales)
         content = ctk.CTkFrame(right, fg_color=BG_DARK)
         content.pack(fill="both", expand=True, padx=0)
 
-        # Frame izquierdo: tabla/datos
         self.left_pane = ctk.CTkFrame(content, width=460, fg_color=BG_CARD, corner_radius=12)
         self.left_pane.pack(side="left", fill="y", padx=(16, 8), pady=16)
         self.left_pane.pack_propagate(False)
 
-        # Frame derecho: gráfica
         self.right_pane = ctk.CTkFrame(content, fg_color=BG_CARD, corner_radius=12)
         self.right_pane.pack(side="left", fill="both", expand=True, padx=(0, 16), pady=16)
 
-    # ── Navegación ────────────────────────────────────────────────────────────
     def _show_query(self, idx):
         for i, btn in enumerate(self.btn_vars):
             btn.configure(fg_color=ACCENT if i == idx else "transparent",
@@ -276,7 +257,6 @@ class MainApp(ctk.CTk):
         icon, name = self.queries[idx]
         self.lbl_title.configure(text=f"{icon}  {name}")
 
-        # Limpiar paneles
         for w in self.left_pane.winfo_children():  w.destroy()
         for w in self.right_pane.winfo_children(): w.destroy()
 
@@ -296,7 +276,7 @@ class MainApp(ctk.CTk):
         ]
         funcs[idx]()
 
-    # ── Helpers ───────────────────────────────────────────────────────────────
+    #Helpers
     def _make_fig(self):
         plt.style.use("dark_background")
         fig = mfig.Figure(figsize=(7, 5), facecolor=BG_CARD)
@@ -351,9 +331,7 @@ class MainApp(ctk.CTk):
         ctk.CTkLabel(card, text=value, text_color=color,
                      font=ctk.CTkFont("Segoe UI", 16, "bold")).pack(anchor="w", padx=12, pady=(0, 8))
 
-    # ══════════════════════════════════════════════════════════════════════════
     #  CONSULTAS
-    # ══════════════════════════════════════════════════════════════════════════
 
     # Q1 — Top 10 por población
     def _q1_top_poblacion(self):
@@ -693,7 +671,6 @@ class MainApp(ctk.CTk):
         fig.tight_layout()
         self._embed_fig(fig)
 
-    # ── Logout ────────────────────────────────────────────────────────────────
     def _logout(self):
         if messagebox.askyesno("Cerrar sesión", "¿Deseas cerrar sesión?"):
             self.destroy()
@@ -701,7 +678,6 @@ class MainApp(ctk.CTk):
             login.mainloop()
 
 
-# ══════════════════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
     login = LoginWindow()
     login.mainloop()
