@@ -8,7 +8,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import os
 import sys
 
-# ── Paleta ──────────────────────────────────────────────────────────────────
 BG      = "#0f0f0f"
 SURFACE = "#1a1a1a"
 BORDER  = "#2a2a2a"
@@ -20,15 +19,10 @@ RED     = "#e05c5c"
 FONT_MONO = ("Courier New", 10)
 FONT_UI   = ("Helvetica", 10)
 
-# ── Rutas ────────────────────────────────────────────────────────────────────
 BASE_DIR  = os.path.dirname(os.path.abspath(__file__))
 CSV_PATH  = os.path.join(BASE_DIR, "ciudades.csv")
 CRED_PATH = os.path.join(BASE_DIR, "credenciales.txt")
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-#  Helpers de estilo
-# ─────────────────────────────────────────────────────────────────────────────
 def style_entry(e, width=28):
     e.configure(
         bg=SURFACE, fg=TEXT, insertbackground=TEXT,
@@ -57,10 +51,6 @@ def sep(parent):
     f.pack(fill="x")
     return f
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-#  LOGIN
-# ─────────────────────────────────────────────────────────────────────────────
 class LoginWindow(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -79,26 +69,22 @@ class LoginWindow(tk.Tk):
     def _build(self):
         pad = dict(padx=40)
 
-        # título
         tk.Frame(self, bg=BG, height=48).pack()
         label(self, "análisis de ciudades", 18, bold=True, color=ACCENT, anchor="center"
               ).pack(**pad, fill="x")
         label(self, "ingresa tus credenciales", 10, color=MUTED, anchor="center"
               ).pack(**pad, pady=(4, 32), fill="x")
 
-        # campo usuario
         label(self, "usuario").pack(**pad, fill="x")
         self.e_user = tk.Entry(self)
         style_entry(self.e_user)
         self.e_user.pack(**pad, pady=(4, 16), fill="x", ipady=6)
 
-        # campo contraseña
         label(self, "contraseña").pack(**pad, fill="x")
         self.e_pass = tk.Entry(self, show="•")
         style_entry(self.e_pass)
         self.e_pass.pack(**pad, pady=(4, 4), fill="x", ipady=6)
 
-        # mostrar contraseña
         self.show_var = tk.BooleanVar()
         ck = tk.Checkbutton(self, text="mostrar contraseña",
                             variable=self.show_var, command=self._toggle,
@@ -108,15 +94,12 @@ class LoginWindow(tk.Tk):
                             cursor="hand2")
         ck.pack(**pad, anchor="w", pady=(0, 20))
 
-        # error
         self.lbl_err = label(self, "", color=RED, anchor="center")
         self.lbl_err.pack(**pad, fill="x")
 
-        # botón
         btn = flat_button(self, "iniciar sesión →", self._login)
         btn.pack(**pad, pady=(8, 0), fill="x")
 
-        # hint
         label(self, "admin/admin123  ·  usuario1/pass2024  ·  analista/datos456",
               size=8, color=MUTED, anchor="center").pack(pady=(20, 0))
 
@@ -162,10 +145,6 @@ class LoginWindow(tk.Tk):
         self.lbl_err.configure(text=f"⚠  {msg}")
         self.after(3000, lambda: self.lbl_err.configure(text=""))
 
-
-# ─────────────────────────────────────────────────────────────────────────────
-#  APP PRINCIPAL
-# ─────────────────────────────────────────────────────────────────────────────
 class MainApp(tk.Tk):
     def __init__(self, username):
         super().__init__()
@@ -186,14 +165,12 @@ class MainApp(tk.Tk):
             messagebox.showerror("Error", f"No se encontró: {CSV_PATH}")
             sys.exit(1)
 
-    # ── Layout ────────────────────────────────────────────────────────────────
     def _build_layout(self):
         # Sidebar
         self.sidebar = tk.Frame(self, bg=SURFACE, width=220)
         self.sidebar.pack(side="left", fill="y")
         self.sidebar.pack_propagate(False)
 
-        # Logo / usuario
         top = tk.Frame(self.sidebar, bg=SURFACE)
         top.pack(fill="x", padx=20, pady=(24, 16))
         label(top, "CityAnalytics", 13, bold=True, color=ACCENT).pack(anchor="w")
@@ -201,20 +178,18 @@ class MainApp(tk.Tk):
 
         sep(self.sidebar)
 
-        # Menú
+        # Numeración y etiquetas ajustadas a los 10 elementos restantes
         self.queries = [
             ("01", "top 10 población"),
             ("02", "temp vs precipitación"),
             ("03", "pib vs esperanza vida"),
             ("04", "densidad poblacional"),
-            ("05", "costeras vs interior"),
-            ("06", "correlación"),
-            ("07", "altitud vs temperatura"),
-            ("08", "infraestructura urbana"),
-            ("09", "destinos turísticos"),
-            ("10", "estadísticas"),
-            ("11", "comparativa por país"),
-            ("12", "mapa de calor"),
+            ("05", "correlación"),
+            ("06", "altitud vs temperatura"),
+            ("07", "infraestructura urbana"),
+            ("08", "estadísticas"),
+            ("09", "comparativa por país"),
+            ("10", "mapa de calor"),
         ]
 
         self.nav_btns = []
@@ -238,18 +213,15 @@ class MainApp(tk.Tk):
 
             self.nav_btns.append((row, n_lbl, t_lbl))
 
-        # Logout
         sep(self.sidebar)
         lo = flat_button(self.sidebar, "cerrar sesión", self._logout,
                          fg=RED, bg=SURFACE)
         lo.configure(anchor="w", padx=20)
         lo.pack(fill="x", pady=12)
 
-        # Panel derecho
         right = tk.Frame(self, bg=BG)
         right.pack(side="left", fill="both", expand=True)
 
-        # Barra de título
         self.titlebar = tk.Frame(right, bg=SURFACE, height=48)
         self.titlebar.pack(fill="x")
         self.titlebar.pack_propagate(False)
@@ -258,7 +230,6 @@ class MainApp(tk.Tk):
         self.lbl_title.pack(side="left", padx=24, pady=12)
         sep(right)
 
-        # Contenido dividido
         content = tk.Frame(right, bg=BG)
         content.pack(fill="both", expand=True)
 
@@ -287,16 +258,20 @@ class MainApp(tk.Tk):
         for w in self.left_pane.winfo_children():  w.destroy()
         for w in self.right_pane.winfo_children(): w.destroy()
 
+        # Lista actualizada para sincronizar los 10 botones con sus funciones exactas
         [
-            self._q1_top_poblacion,  self._q2_temp_precip,
-            self._q3_pib_vida,       self._q4_densidad,
-            self._q5_costeras,       self._q6_correlacion,
-            self._q7_altitud_temp,   self._q8_infraestructura,
-            self._q9_turismo,        self._q10_estadisticas,
-            self._q11_por_pais,      self._q12_heatmap,
+            self._q1_top_poblacion,
+            self._q2_temp_precip,
+            self._q3_pib_vida,
+            self._q4_densidad,
+            self._q6_correlacion,     # Antes era la 06
+            self._q7_altitud_temp,    # Antes era la 07
+            self._q8_infraestructura, # Antes era la 08
+            self._q10_estadisticas,   # Antes era la 10
+            self._q11_por_pais,       # Antes era la 11
+            self._q12_heatmap,        # Antes era la 12
         ][idx]()
 
-    # ── Helpers de UI ──────────────────────────────────────────────────────
     def _make_fig(self):
         plt.style.use("dark_background")
         fig = mfig.Figure(figsize=(7, 5), facecolor=SURFACE)
@@ -349,8 +324,6 @@ class MainApp(tk.Tk):
                  font=("Helvetica", 9), anchor="w").pack(anchor="w", padx=10)
         tk.Label(f, text=value, bg=BG, fg=color,
                  font=("Courier New", 11, "bold"), anchor="w").pack(anchor="w", padx=10)
-
-    # ── Consultas (misma lógica, solo cambia _make_fig/_embed/_make_table) ──
 
     def _q1_top_poblacion(self):
         top = self.df.nlargest(10, "poblacion")[["ciudad", "pais", "poblacion"]].copy()
@@ -454,39 +427,6 @@ class MainApp(tk.Tk):
         fig.tight_layout()
         self._embed_fig(fig)
 
-    def _q5_costeras(self):
-        grupo = self.df.groupby("costa").agg(
-            Ciudades=("ciudad", "count"),
-            Pob_Media=("poblacion", "mean"),
-            PIB_Medio=("pib_per_capita", "mean"),
-            Turistas_M=("turistas_anuales", "mean")
-        ).reset_index()
-        grupo["Pob_Media"]  = (grupo["Pob_Media"] / 1e6).round(2)
-        grupo["PIB_Medio"]  = grupo["PIB_Medio"].round(0)
-        grupo["Turistas_M"] = (grupo["Turistas_M"] / 1e6).round(2)
-        self._make_table(grupo, "costeras vs interior")
-        for _, row in grupo.iterrows():
-            self._stat_card(self.left_pane, row["costa"],
-                            f"{int(row['Ciudades'])} ciudades")
-
-        metrics = ["Pob_Media", "PIB_Medio", "Turistas_M"]
-        labels  = ["Pob. Media (M)", "PIB Medio (USD)", "Turistas (M)"]
-        x = np.arange(len(metrics)); w = 0.35
-        fig = self._make_fig()
-        ax = fig.add_subplot(111, facecolor=SURFACE)
-        si = grupo[grupo["costa"] == "Sí"][metrics].values.flatten()
-        no = grupo[grupo["costa"] == "No"][metrics].values.flatten()
-        ax.bar(x - w/2, si, w, label="Costera",  color=ACCENT,  alpha=0.85, edgecolor="none")
-        ax.bar(x + w/2, no, w, label="Interior", color=MUTED, alpha=0.85, edgecolor="none")
-        ax.set_xticks(x); ax.set_xticklabels(labels, color=MUTED, fontsize=9)
-        ax.set_title("Costeras vs Interior", color=TEXT, fontsize=11, pad=10)
-        ax.tick_params(colors=MUTED, labelsize=8)
-        ax.legend(facecolor=BG, edgecolor=BORDER, labelcolor=TEXT, fontsize=9)
-        for s in ax.spines.values(): s.set_visible(False)
-        ax.yaxis.grid(True, color=BORDER, linewidth=0.5); ax.set_axisbelow(True)
-        fig.tight_layout()
-        self._embed_fig(fig)
-
     def _q6_correlacion(self):
         num_cols = ["poblacion", "densidad", "temperatura_media", "precipitacion_mm",
                     "pib_per_capita", "esperanza_vida", "altitud_m", "turistas_anuales"]
@@ -558,28 +498,6 @@ class MainApp(tk.Tk):
         ax.legend(facecolor=BG, edgecolor=BORDER, labelcolor=TEXT, fontsize=9)
         for s in ax.spines.values(): s.set_visible(False)
         ax.yaxis.grid(True, color=BORDER, linewidth=0.5); ax.set_axisbelow(True)
-        fig.tight_layout()
-        self._embed_fig(fig)
-
-    def _q9_turismo(self):
-        top = self.df.nlargest(10, "turistas_anuales")[["ciudad", "pais", "turistas_anuales"]].copy()
-        top["turistas_M"] = (top["turistas_anuales"] / 1e6).round(1)
-        self._make_table(top[["ciudad", "pais", "turistas_M"]].rename(
-            columns={"turistas_M": "turistas (M/año)"}), "top 10 destinos turísticos")
-        self._stat_card(self.left_pane, "destino #1",
-                        f"{top.iloc[0]['ciudad']} — {top.iloc[0]['turistas_M']}M")
-
-        fig = self._make_fig()
-        ax = fig.add_subplot(111, facecolor=SURFACE)
-        grays = [f"#{int(40 + 180 * (i/len(top))):02x}" * 3 for i in range(len(top))]
-        wedge_props = dict(width=0.55, edgecolor=SURFACE, linewidth=2)
-        wedges, texts, autotexts = ax.pie(
-            top["turistas_M"], labels=top["ciudad"],
-            colors=grays, autopct="%1.1f%%",
-            pctdistance=0.75, wedgeprops=wedge_props,
-            startangle=140, textprops={"color": MUTED, "fontsize": 8})
-        for at in autotexts: at.set_color(TEXT); at.set_fontsize(7)
-        ax.set_title("Distribución de Turistas (Top 10)", color=TEXT, fontsize=11, pad=10)
         fig.tight_layout()
         self._embed_fig(fig)
 
@@ -664,7 +582,6 @@ class MainApp(tk.Tk):
         if messagebox.askyesno("Cerrar sesión", "¿Deseas cerrar sesión?"):
             self.destroy()
             LoginWindow().mainloop()
-
 
 if __name__ == "__main__":
     LoginWindow().mainloop()
